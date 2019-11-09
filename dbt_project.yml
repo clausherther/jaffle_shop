@@ -14,9 +14,22 @@ clean-targets:
     - "dbt_modules"
     - "logs"
 
+seeds:
+  jaffle_shop:
+    enabled: true
+    schema: raw
+
 models:
   jaffle_shop:
-      materialized: table
       staging:
         materialized: view
+        schema: staging
         tags: ["staging", "hourly"]
+      marts:
+        core:
+          materialized: table
+          schema: analysis
+          intermediate:
+            materialized: table
+            schema: ods
+          
