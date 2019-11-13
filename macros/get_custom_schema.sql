@@ -1,12 +1,16 @@
 {%- macro generate_schema_name_for_env(custom_schema_name=none) -%}
     {%- set default_schema = target.schema -%}
-    {%- if (( target.name == 'prod' or
+    {{ log(default_schema, true)}}
+    {{ log(custom_schema_name, true)}}
+    {%- if (( target.name == 'bq' or
               target.name == 'dev' or
               target.name == 'default') and
-              (custom_schema_name is not none)) -%}
+              (custom_schema_name)) -%}
         {{ custom_schema_name | trim }}
+    {%- elif custom_schema_name -%}
+        {{ default_schema }}_{{ custom_schema_name }}
     {%- else -%}
-        {{ default_schema }}
+        {{ custom_schema_name | trim }}
     {%- endif -%}
 {%- endmacro -%}
 
